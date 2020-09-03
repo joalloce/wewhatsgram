@@ -1,7 +1,9 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken');
 
-//todo:token
+//handle errors for the auth
+
+//todo:token and handle errors
 module.exports.signup_post = async (req,res) => {
   const{username,email,password} = req.body;
   try {
@@ -11,7 +13,7 @@ module.exports.signup_post = async (req,res) => {
     res.status(400).json(err)
   }
 }
-//todo: token
+//todo: token and handle errors
 module.exports.login_post = async (req,res) => {
   const{email,password} = req.body;
   try {
