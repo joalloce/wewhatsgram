@@ -1,10 +1,23 @@
-const express = require('express');
-const mongoose = require('mongoose')
+//mongoose db: wewhatsgram user: wewhatsgram pass: tFCCaXcmtIFfVDZO
+
+const express = require("express");
+const mongoose = require("mongoose");
 
 const app = express();
 
 const port = 8383;
 
-app.listen(port);
+const dbURI = "mongodb+srv://wewhatsgram:tFCCaXcmtIFfVDZO@clusterchat.xzph8.gcp.mongodb.net/wewhatsgram?retryWrites=true&w=majority";
 
-app.get('/',(req,res) => res.send("hello"));
+mongoose
+  .connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  })
+  .then((result) => app.listen(port))
+  .catch((err) => {
+    console.log(err);
+  });
+
+app.get("/", (req, res) => res.send("hello"));
