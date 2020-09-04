@@ -1,0 +1,1 @@
+Mern stack, jwt and websockets to create a chat or something

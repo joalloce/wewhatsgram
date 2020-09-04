@@ -4,11 +4,18 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require('./routes/authRoutes');
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
+
+var corsOptions = {
+  origin: true,
+  credentials:  true
+}
 
 const app = express();
 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
+app.use(cors(corsOptions));
 
 const port = 8383;
 

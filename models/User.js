@@ -7,9 +7,10 @@ const userSchema = mongoose.Schema({
     type: String,
     require: [true, "Please enter a username"],
     unique: true,
-    validate: [function() {
-      return validator.matches(this.username,"^[a-zA-Z0-9_.-]*$")
-    },
+    validate: [
+      function () {
+        return validator.matches(this.username, "^[a-zA-Z0-9_.-]{2,}$");
+      },
       "Please enter a valid username",
     ],
   },
