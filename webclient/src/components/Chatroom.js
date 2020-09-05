@@ -15,13 +15,28 @@ const Chatroom = () => {
     }
     requireAuth();
   }, [history]);
-
+  useEffect(()=>{
+    ws.onopen=()=>{
+      console.log("open")
+      //ws.send("hey")
+    }
+    ws.onmessage=({data})=>{
+      console.log("message", data)
+    }
+    
+  })
+  const handleMessage = (e)=> {
+    e.preventDefault();
+    console.log("sending")
+    ws.send("hey2")
+  }
+  const ws = new WebSocket("ws://localhost:8383")
   return (
     <>
       <ul className="chat-list"></ul>
       <form className="chat-form">
-        <input type="text" name="mssg" placeholder="Type message..." required />
-        <button>Send</button>
+        <input type="text" name="mssg" placeholder="Type message..." />
+        <button onClick={handleMessage}>Send</button>
       </form>
     </>
   );
