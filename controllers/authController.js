@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-const maxAge = 60 * 60;
+const maxAge = 60* 60;
 const jwt_secret = "wewhatsgram jwt";
 
 //todo:token and handle errors
@@ -13,7 +13,7 @@ module.exports.signup_post = async (req, res) => {
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     //res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
     //res.header('Access-Control-Allow-Credentials','true')
-    res.status(201).json({ user: user._id });
+    res.status(201).json({ user: user.username });
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
@@ -28,7 +28,7 @@ module.exports.login_post = async (req, res) => {
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     //res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
     //res.header('Access-Control-Allow-Credentials','true')
-    res.status(200).json({ user: user._id });
+    res.status(200).json({ user: user.username });
   } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });

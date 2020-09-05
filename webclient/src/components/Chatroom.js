@@ -1,7 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 const Chatroom = () => {
   const history = useHistory();
+  const [chatList, setChatList] = useState([]);
+  const [message, setMessage] = useState("");
+  const { loggedIn } = useContext(AuthContext);
+  const ws = useRef(null);
   useEffect(() => {
     async function requireAuth() {
       const res = await fetch("http://localhost:8383/auth/requireAuth", {
@@ -15,27 +20,53 @@ const Chatroom = () => {
     }
     requireAuth();
   }, [history]);
+
+  useEffect(() => {
+    ws.current = new WebSocket("ws://localhost:8383");
+    ws.current.onopen = () => {};
+
+    return () => {
+      ws.current.close();
+    };
+  },[]);
+
   useEffect(()=>{
-    ws.onopen=()=>{
-      console.log("open")
-      //ws.send("hey")
-    }
-    ws.onmessage=({data})=>{
-      console.log("message", data)
-    }
-    
-  })
-  const handleMessage = (e)=> {
+    ws.current.onmessage = async ({ data }) => {
+      const { user, message } = JSON.parse(data);
+      setChatList([...chatList, { user, message }]);
+    };
+  },[chatList])
+
+  const handleChange = (e) => {
+    setMessage(e.target.value);
+  };
+  
+  const handleMessage = (e) => {
     e.preventDefault();
-    console.log("sending")
-    ws.send("hey2")
-  }
-  const ws = new WebSocket("ws://localhost:8383")
+    if (message) {
+      ws.current.send(JSON.stringify({ user: loggedIn, message }));
+      setMessage("");
+    }
+  };
+
   return (
     <>
-      <ul className="chat-list"></ul>
+      <ul className="chat-list">
+        {chatList.map((e, index) => (
+          <li key={index}>
+            <div>{e.user}</div>
+            <div>{e.message}</div>
+          </li>
+        ))}
+      </ul>
       <form className="chat-form">
-        <input type="text" name="mssg" placeholder="Type message..." />
+        <input
+          type="text"
+          name="mssg"
+          value={message}
+          placeholder="Type message..."
+          onChange={handleChange}
+        />
         <button onClick={handleMessage}>Send</button>
       </form>
     </>

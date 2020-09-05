@@ -60,7 +60,7 @@ export default function Signup() {
         setPasswordError(data.errors.password);
       }
       if (data.user) {
-        setLoggedIn(data.user);
+        setLoggedIn(username);
         history.push("/chatroom");
       }
     } catch (err) {
