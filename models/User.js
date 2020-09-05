@@ -27,7 +27,7 @@ const userSchema = mongoose.Schema({
   },
 });
 
-//fire a function before saving User to db
+//fire a function to hash password before saving User to db
 userSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
@@ -48,4 +48,5 @@ userSchema.statics.login = async function (email, password) {
 };
 
 const User = mongoose.model("user", userSchema);
+
 module.exports = User;

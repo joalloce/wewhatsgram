@@ -42,10 +42,12 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     //reset errors
     setUsernameError("");
     setEmailError("");
     setPasswordError("");
+    
     try {
       const res = await fetch("http://localhost:8383/auth/signup", {
         method: "POST",
@@ -79,6 +81,7 @@ export default function Signup() {
       setPassword(e.target.value);
     }
   };
+  
   const classes = useStyles();
 
   return (

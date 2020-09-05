@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -8,7 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useHistory } from "react-router-dom";
-import {AuthContext} from '../../context/AuthContext'
+import { AuthContext } from "../../context/AuthContext";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -56,10 +57,10 @@ export default function Login() {
         setEmailError(data.errors.email);
         setPasswordError(data.errors.password);
       }
-      
+
       if (data.user) {
-        setLoggedIn(data.user)
-        history.push("/chatroom"); 
+        setLoggedIn(data.user);
+        history.push("/chatroom");
       }
     } catch (err) {
       console.log(err);
@@ -74,6 +75,7 @@ export default function Login() {
       setPassword(e.target.value);
     }
   };
+  
   const classes = useStyles();
 
   return (

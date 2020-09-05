@@ -1,10 +1,9 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-const maxAge = 60* 60;
+const maxAge = 20 //* 60; // an hour
 const jwt_secret = "wewhatsgram jwt";
 
-//todo:token and handle errors
 module.exports.signup_post = async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -19,7 +18,7 @@ module.exports.signup_post = async (req, res) => {
     res.status(400).json({ errors });
   }
 };
-//todo: token and handle errors
+
 module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
   try {
