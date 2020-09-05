@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,6 +7,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { useHistory } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,6 +37,8 @@ export default function Signup() {
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const history = useHistory();
+  const { setLoggedIn } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,7 +51,7 @@ export default function Signup() {
         method: "POST",
         body: JSON.stringify({ username, email, password }),
         headers: { "Content-Type": "application/json" },
-        credentials: 'include'
+        credentials: "include",
       });
       const data = await res.json();
       if (data.errors) {
@@ -55,7 +59,10 @@ export default function Signup() {
         setEmailError(data.errors.email);
         setPasswordError(data.errors.password);
       }
-      if (data.user) console.log(data.user); //redirect to home
+      if (data.user) {
+        setLoggedIn(data.user);
+        history.push("/chatroom");
+      }
     } catch (err) {
       console.log(err);
     }

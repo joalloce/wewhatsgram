@@ -5,17 +5,22 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
+import Chatroom from "./components/Chatroom";
+import AuthContextProvider from "./context/AuthContext";
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About}/>
-          <Route exact path="/login" component={Login} />
-          <Route path="/signup" component={Signup}/>
-        </Switch>
+        <AuthContextProvider>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route exact path="/login" component={Login} />
+            <Route path="/signup" component={Signup}  />
+            <Route path="/chatroom" component={Chatroom} />
+          </Switch>
+        </AuthContextProvider>
       </div>
     </BrowserRouter>
   );
