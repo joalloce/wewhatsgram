@@ -1,8 +1,9 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const config = require("config")
 
-const maxAge = 20 //* 60; // an hour
-const jwt_secret = "wewhatsgram jwt";
+const maxAge = 20 * 60; // an hour
+const jwt_secret = config.get("jwt_secret")
 
 module.exports.signup_post = async (req, res) => {
   const { username, email, password } = req.body;
@@ -10,8 +11,6 @@ module.exports.signup_post = async (req, res) => {
     const user = await User.create({ username, email, password });
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    //res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
-    //res.header('Access-Control-Allow-Credentials','true')
     res.status(201).json({ user: user.username });
   } catch (err) {
     const errors = handleErrors(err);
@@ -25,8 +24,6 @@ module.exports.login_post = async (req, res) => {
     const user = await User.login(email, password);
     const token = createToken(user._id);
     res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    //res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
-    //res.header('Access-Control-Allow-Credentials','true')
     res.status(200).json({ user: user.username });
   } catch (err) {
     const errors = handleErrors(err);
@@ -74,7 +71,7 @@ const handleErrors = (err) => {
 module.exports.checkuser_get = async (req, res) => {
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, "wewhatsgram jwt", async (err, decodedToken) => {
+    jwt.verify(token, jwt_secret, async (err, decodedToken) => {
       if (err) {
         res.status(200).json({ user: null });
       } else {
@@ -90,7 +87,7 @@ module.exports.checkuser_get = async (req, res) => {
 module.exports.requireAuth_get = (req, res) => {
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, "wewhatsgram jwt", (err, decodedToken) => {
+    jwt.verify(token, jwt_secret, (err, decodedToken) => {
       if (err) {
         res.status(200).json({ requireAuth: true });
       } else {

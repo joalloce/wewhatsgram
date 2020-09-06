@@ -1,5 +1,3 @@
-//mongoose db: wewhatsgram user: wewhatsgram pass: tFCCaXcmtIFfVDZO
-
 const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
@@ -7,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const http = require("http");
 const WebSocket = require("ws");
+const config = require("config")
 
 var corsOptions = {
   origin: true,
@@ -22,8 +21,7 @@ app.use(cors(corsOptions));
 const port = 8383;
 
 //database connection
-const dbURI =
-  "mongodb+srv://wewhatsgram:tFCCaXcmtIFfVDZO@clusterchat.xzph8.gcp.mongodb.net/wewhatsgram?retryWrites=true&w=majority";
+const dbURI = config.get('mongoURI')
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,

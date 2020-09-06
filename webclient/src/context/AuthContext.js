@@ -4,6 +4,7 @@ export const AuthContext = createContext("");
 
 const AuthContextProvider = (props) => {
   const [loggedIn, setLoggedIn] = useState("");
+  
   useEffect(() => {
     async function checkUser() {
       const res = await fetch("http://localhost:8383/auth/checkUser", {
@@ -19,6 +20,7 @@ const AuthContextProvider = (props) => {
     }
     checkUser();
   }, [loggedIn]);
+
   return (
     <AuthContext.Provider value={{ loggedIn, setLoggedIn }}>
       {props.children}
